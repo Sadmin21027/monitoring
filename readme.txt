@@ -1,8 +1,9 @@
 Monitoring Grafana+Prometheus+Blackbox
-mkdir monitoring
-cd monitoring
 git clone https://github.com/Sadmin21027/Monitoring.git
-cd 
+cd monitoring
+nano config/prometheus/prometheus.yml
+№ change ip addres
+docker compose up -d
 # Permission Denied
 chmod 775 volumes/prometheus/
 chmod 775 volumes/grafana/
