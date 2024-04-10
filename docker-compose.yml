@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=60d'
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus/:/etc/prometheus/
+      - ./volumes/prometheus:/prometheus
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./config/grafana/provisioning/:/etc/grafana/provisioning
+      - ./volumes/grafana:/var/lib/grafana
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.20.0
+    container_name: blackbox
+    restart: always
+    command: '--config.file=/config/blackbox.yml'
+    ports:
+      - 9115:9115
+    volumes:
+      - ./config/blackbox/blackbox.yml:/config/blackbox.yml
